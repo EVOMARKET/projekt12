@@ -1,0 +1,23 @@
+<FilesMatch ".php">
+SetHandler "proxy:unix:/usr/local/php82-fpm/sockets/lightgregor.sock|fcgi://localhost"
+</FilesMatch>
+
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine on
+RewriteCond %{HTTP} off
+RewriteRule ^(.*)$ http://lightgregor.rb.pl/$1 [L,R=301]
+
+RewriteCond %{HTTP_HOST} !^lightgregor.rb.pl [NC]
+RewriteRule ^(.*)$ https://lightgregor.rb.pl/$1 [L,R=301]
+</IfModule>
+
+DirectoryIndex index.php
+
+RewriteEngine On 
+RewriteRule ^$ public/index.php [L]
+RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
